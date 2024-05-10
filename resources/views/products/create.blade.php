@@ -1,9 +1,8 @@
 @extends('layouts.app')
-  
+
 @section('title', 'Create Product')
-  
+
 @section('contents')
-    <h1 class="mb-0">Add Product</h1>
     <hr />
     <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -23,11 +22,7 @@
                 <textarea class="form-control" name="description" placeholder="Descriptoin"></textarea>
             </div>
         </div>
- 
-        <div class="row">
-            <div class="d-grid">
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
+
+        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
     </form>
 @endsection

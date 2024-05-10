@@ -3,7 +3,6 @@
 @section('title', 'Show Product')
 
 @section('contents')
-    <h1 class="mb-0">Detail Product</h1>
     <hr />
     <div class="row">
         <div class="col mb-3">
@@ -17,7 +16,7 @@
     </div>
     <div class="row">
         <div class="col mb-3">
-            <label class="form-label">product_code</label>
+            <label class="form-label">Product Code</label>
             <input type="text" name="product_code" class="form-control" placeholder="Barcode" value="{{ $product->product_code }}" readonly>
         </div>
         <div class="col mb-3">

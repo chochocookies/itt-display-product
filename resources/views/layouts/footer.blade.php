@@ -5,29 +5,47 @@
       </div>
     </div>
   </footer>
+  @section('scripts')
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-        document.querySelectorAll('.barcode-link').forEach(link => {
-        link.addEventListener('click', function(event) {
-            event.preventDefault(); // Menahan aksi default dari link
+  $(document).ready(function() {
+      // Menampilkan modal dengan barcode preview dan deskripsi
+      $('.barcode-link').click(function(e) {
+          e.preventDefault(); // Mencegah tindakan default dari link
 
-            const barcodeCarouselInner = document.getElementById('barcodeCarouselInner');
-            barcodeCarouselInner.innerHTML = '';
+          // Ambil data dari link
+          var productCode = $(this).data('product-code');
+          var description = $(this).data('description');
+          var barcodeHtml = $(this).html();
 
-            const productCode = this.dataset.productCode;
-            const barcodeImgUrl = `/generate-barcode/${productCode}`;
+          // Ubah isi modal sesuai dengan data
+          $('#barcodeModal .modal-body').html('<div class="text-center">' + barcodeHtml + '</div><div class="text-center">' + productCode + '</div><p>' + description + '</p>');
 
-            const barcodeItem = document.createElement('div');
-            barcodeItem.classList.add('carousel-item');
-            barcodeItem.innerHTML = `
-                <img src="${barcodeImgUrl}" class="d-block mx-auto w-full" style="max-width: 100%;" alt="Barcode Image">
-            `;
-            barcodeCarouselInner.appendChild(barcodeItem);
+          // Tampilkan modal
+          $('#barcodeModal').modal('show');
+      });
 
-            const firstItem = barcodeCarouselInner.querySelector('.carousel-item');
-            firstItem.classList.add('active');
+      // Menangani klik pada tombol next
+      $('#nextButton').on('click touchstart', function() {
+          // Pindah ke modal berikutnya
+          var $nextModal = $('#barcodeModal').next('.modal');
+          if ($nextModal.length > 0) {
+              $('#barcodeModal').modal('hide');
+              $nextModal.modal('show');
+          }
+      });
 
-            const barcodeModal = new bootstrap.Modal(document.getElementById('barcodeModal'));
-            barcodeModal.show();
-        });
-    });
+      // Menangani klik pada tombol prev
+      $('#prevButton').on('click touchstart', function() {
+          // Pindah ke modal sebelumnya
+          var $prevModal = $('#barcodeModal').prev('.modal');
+          if ($prevModal.length > 0) {
+              $('#barcodeModal').modal('hide');
+              $prevModal.modal('show');
+          }
+      });
+  });
   </script>
+  @endsection
+
+
