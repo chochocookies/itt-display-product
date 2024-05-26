@@ -2,10 +2,10 @@
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-      <div class="sidebar-brand-icon rotate-n-15">
-        <i class="fas fa-bug"></i>
-      </div>
-      <div class="sidebar-brand-text mx-3">Pika <sup>>_</sup></div>
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-bug"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">Pika <sup>>_</sup></div>
     </a>
 
     <!-- Divider -->
@@ -13,21 +13,24 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item">
-      <a class="nav-link" href="{{ route('dashboard') }}">
-        <i class="fas fa-fw fa-tachometer-alt"></i>
-        <span>Dashboard</span></a>
+        <a class="nav-link" href="{{ route('dashboard') }}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" href="{{ route('products') }}">
-        <i class="fas fa-fw fa-tachometer-alt"></i>
-        <span>Product</span></a>
+        <a class="nav-link" href="{{ route('products.index') }}">
+            <i class="fas fa-fw fa-box"></i>
+            <span>Product</span>
+        </a>
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" href="/profile">
-        <i class="fas fa-fw fa-tachometer-alt"></i>
-        <span>Profile</span></a>
+        <a class="nav-link" href="/profile">
+            <i class="fas fa-fw fa-user"></i>
+            <span>Profile</span>
+        </a>
     </li>
 
     <!-- Divider -->
@@ -35,8 +38,6 @@
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
-      <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>
-
-
-  </ul>
+</ul>

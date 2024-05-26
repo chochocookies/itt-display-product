@@ -4,7 +4,6 @@ use App\Http\Controllers\BarcodeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
-use Milon\Barcode\BarcodeServiceProvider;
 use App\Http\Controllers\ModisController;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,12 +24,12 @@ Route::get('/', function () {
 
 Route::controller(AuthController::class)->group(function () {
     Route::get('register', 'register')->name('register');
-    Route::post('register','registerSave')->name('register.save');
+    Route::post('register', 'registerSave')->name('register.save');
 
-    Route::get('login','login')->name('login');
-    Route::post('login','loginAction')->name('login.action');
+    Route::get('login', 'login')->name('login');
+    Route::post('login', 'loginAction')->name('login.action');
 
-    Route::get('logout','logout')->middleware('auth')->name('logout');
+    Route::get('logout', 'logout')->middleware('auth')->name('logout');
 });
 
 Route::middleware('auth')->group(function () {
@@ -39,19 +38,18 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     Route::controller(ProductController::class)->prefix('products')->group(function () {
-        Route::get('','index')->name('products');
-        Route::get('create','create')->name('products.create');
-        Route::post('store','store')->name('products.store');
-        Route::get('show/{id}','show')->name('products.show');
-        Route::get('edit/{id}','edit')->name('products.edit');
-        Route::put('edit/{id}','update')->name('products.update');
+        Route::get('', 'index')->name('products.index');
+        Route::get('create', 'create')->name('products.create');
+        Route::post('store', 'store')->name('products.store');
+        Route::get('show/{id}', 'show')->name('products.show');
+        Route::get('edit/{id}', 'edit')->name('products.edit');
+        Route::put('edit/{id}', 'update')->name('products.update');
         Route::delete('destroy/{id}', 'destroy')->name('products.destroy');
-        Route::get('/generate-barcode/{productCode}', [BarcodeController::class, 'generateBarcode']);
-        Route::get('/modis', [ModisController::class, 'index'])->name('modis');
-
+        Route::get('data', 'data')->name('products.data');
+        Route::get('titles', 'getTitles')->name('products.titles');
     });
 
-    Route::get('/profile', [App\Http\Controllers\AuthController::class, 'profile'])->name('profile');
+    Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
 });
 
 

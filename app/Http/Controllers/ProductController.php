@@ -4,27 +4,94 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Yajra\DataTables\DataTables;
 use Milon\Barcode\DNS1D;
 
 class ProductController extends Controller
 {
+    public function data(Request $request)
+    {
+        $title = $request->query('title', '');
+
+        $products = Product::query();
+
+        if ($title) {
+            $products->where('title', $title);
+        }
+
+        return DataTables::of($products)
+            ->addColumn('action', function ($product) {
+                return '<a href="'.route('products.show', $product->id).'" class="btn btn-primary">View</a>';
+            })
+            ->make(true);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $query = Product::orderBy('created_at', 'DESC');
-
-        if ($request->has('modis') && $request->input('modis') !== '') {
-            $query->where('title', $request->input('modis'));
-        }
-
-        $products = $query->paginate(10); // Menggunakan paginate() untuk pagination
-
-        $modis = Product::select('title')->distinct()->pluck('title')->toArray();
-
-        return view('products.index', compact('products', 'modis')); // Mengirimkan $products ke view
+        $title = $request->query('title', ''); // Jika tidak ada title yang dikirim, default ke string kosong
+        // \Log::info('Title from URL:', ['title' => $title]); // Tambahkan logging untuk debugging
+        return view('products.index', compact('title'));
     }
+
+    // public function index()
+    // {
+    //     return view('products.index');
+    // }
+    // public function index(Request $request)
+    // {
+    //     $title = $request->query('title', ''); // Jika tidak ada title yang dikirim, default ke string kosong
+    //     return view('products.index', compact('title'));
+    // }
+
+    /**
+     * Get data for DataTables.
+     */
+    // public function data(Request $request)
+    // {
+    //     if ($request->ajax()) {
+    //         $query = Product::query();
+    //         return DataTables::of($query)
+    //             ->addColumn('action', function($row) {
+    //                 $editUrl = route('products.edit', $row->id);
+    //                 $deleteUrl = route('products.destroy', $row->id);
+    //                 return '
+    //                     <a href="'.$editUrl.'" class="btn btn-sm btn-primary">Edit</a>
+    //                     <form action="'.$deleteUrl.'" method="POST" style="display:inline;">
+    //                         '.csrf_field().'
+    //                         '.method_field('DELETE').'
+    //                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+    //                     </form>
+    //                 ';
+    //             })
+    //             ->rawColumns(['action'])
+    //             ->make(true);
+    //     }
+    // }
+    // public function data()
+    // {
+    //     $products = Product::select(['id', 'title', 'rak', 'shelf', 'baris', 'price', 'description', 'product_code']);
+
+    //     return DataTables::of($products)
+    //         ->addColumn('action', function ($product) {
+    //             return '<a href="'.route('products.show', $product->id).'" class="btn btn-primary">View</a>';
+    //         })
+    //         ->make(true);
+    // }
+
+    public function getUniqueTitles()
+    {
+        $titles = Product::select('title')->distinct()->get();
+        return response()->json($titles);
+    }
+    public function getTitles()
+    {
+        $titles = Product::select('title')->distinct()->get();
+        return response()->json($titles);
+    }
+
 
 
     /**
@@ -40,19 +107,42 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        Product::create($request->all());
+        // Validasi data
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'rak' => 'required|string|max:255',
+            'shelf' => 'required|string|max:255',
+            'baris' => 'required|string|max:255',
+            'price' => 'required|string|max:255',
+            'description' => 'required|string',
+            'product_code' => 'required|string|max:255|unique:products,product_code',
+        ]);
 
-        return redirect()->route('products')->with('success', 'Product added successfully');
+        // Simpan data ke database
+        Product::create($validatedData);
 
+        return redirect()->route('products.index')->with('success', 'Product added successfully');
     }
 
-    public function generateBarcode($id)
-    {
-        $product = Product::findOrFail($id);
-        $barcode = DNS1D::getBarcodeHTML($product->product_code, 'C128');
 
-        return view('products.barcode', compact('barcode', 'product'));
-    }
+    /**
+     * Generate barcode for a specific product.
+     */
+    // public function generateBarcode($id)
+    // {
+    //     $product = Product::findOrFail($id);
+    //     $barcode = DNS1D::getBarcodeHTML($product->product_code, 'C128');
+
+    //     return view('products.barcode', compact('barcode', 'product'));
+    // }
+    // public function generateBarcode($id)
+    // {
+    //     $product = Product::findOrFail($id);
+    //     $barcode = DNS1D::getBarcodeHTML($product->product_code, 'C128');
+
+    //     return view('products.barcode', compact('barcode', 'product'));
+    // }
+
 
     /**
      * Display the specified resource.
@@ -79,11 +169,21 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'rak' => 'required|string|max:255',
+            'shelf' => 'required|string|max:255',
+            'baris' => 'required|string|max:255',
+            'price' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'product_code' => 'required|string|max:255',
+        ]);
+
         $product = Product::findOrFail($id);
 
         $product->update($request->all());
 
-        return redirect()->route('products')->with('success', 'product updated successfully');
+        return redirect()->route('products.index')->with('success', 'Product updated successfully');
     }
 
     /**
@@ -95,6 +195,12 @@ class ProductController extends Controller
 
         $product->delete();
 
-        return redirect()->route('products')->with('success', 'product deleted successfully');
+        return redirect()->route('products.index')->with('success', 'Product deleted successfully');
+    }
+
+    public function dashboard()
+    {
+        $titles = Product::distinct()->pluck('title'); // Mengambil judul unik dari database
+        return view('dashboard', compact('titles'));
     }
 }

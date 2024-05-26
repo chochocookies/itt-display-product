@@ -3,26 +3,39 @@
 @section('title', 'Create Product')
 
 @section('contents')
-    <hr />
-    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+<div class="container">
+    <h2>Create Product</h2>
+    <form action="{{ route('products.store') }}" method="POST">
         @csrf
-        <div class="row mb-3">
-            <div class="col">
-                <input type="text" name="title" class="form-control" placeholder="Modis">
-            </div>
-            <div class="col">
-                <input type="text" name="price" class="form-control" placeholder="PLU">
-            </div>
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" class="form-control" id="title" name="title" required>
         </div>
-        <div class="row mb-3">
-            <div class="col">
-                <input type="text" name="product_code" class="form-control" placeholder="Product Code">
-            </div>
-            <div class="col">
-                <textarea class="form-control" name="description" placeholder="Descriptoin"></textarea>
-            </div>
+        <div class="form-group">
+            <label for="rak">Rak:</label>
+            <input type="text" class="form-control" id="rak" name="rak" required>
         </div>
-
-        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+        <div class="form-group">
+            <label for="shelf">Shelf:</label>
+            <input type="text" class="form-control" id="shelf" name="shelf" required>
+        </div>
+        <div class="form-group">
+            <label for="baris">Baris:</label>
+            <input type="text" class="form-control" id="baris" name="baris" required>
+        </div>
+        <div class="form-group">
+            <label for="price">Price:</label>
+            <input type="text" class="form-control" id="price" name="price" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea class="form-control" id="description" name="description" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="product_code">Product Code:</label>
+            <input type="text" class="form-control" id="product_code" name="product_code" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+</div>
 @endsection

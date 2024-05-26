@@ -3,25 +3,46 @@
 @section('title', 'Show Product')
 
 @section('contents')
+<div class="row">
+    <div class="col mb-3">
+        {!! DNS1D::getBarcodeHTML($product->product_code, 'C128') !!}
+    </div>
+</div>
     <hr />
     <div class="row">
         <div class="col mb-3">
-            <label class="form-label">Modis</label>
-            <input type="text" name="title" class="form-control" placeholder="Modis" value="{{ $product->title }}" readonly>
+            <label class="form-label">Title</label>
+            <input type="text" name="title" class="form-control" placeholder="Title" value="{{ $product->title }}" readonly>
         </div>
         <div class="col mb-3">
-            <label class="form-label">PLU</label>
-            <input type="text" name="price" class="form-control" placeholder="Plu" value="{{ $product->price }}" readonly>
+            <label class="form-label">Price</label>
+            <input type="text" name="price" class="form-control" placeholder="Price" value="{{ $product->price }}" readonly>
         </div>
     </div>
     <div class="row">
         <div class="col mb-3">
             <label class="form-label">Product Code</label>
-            <input type="text" name="product_code" class="form-control" placeholder="Barcode" value="{{ $product->product_code }}" readonly>
+            <input type="text" name="product_code" class="form-control" placeholder="Product Code" value="{{ $product->product_code }}" readonly>
         </div>
         <div class="col mb-3">
             <label class="form-label">Description</label>
-            <textarea class="form-control" name="description" placeholder="Descriptoin" readonly>{{ $product->description }}</textarea>
+            <textarea class="form-control" name="description" placeholder="Description" readonly>{{ $product->description }}</textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col mb-3">
+            <label class="form-label">Rak</label>
+            <input type="text" name="rak" class="form-control" placeholder="Rak" value="{{ $product->rak }}" readonly>
+        </div>
+        <div class="col mb-3">
+            <label class="form-label">Shelf</label>
+            <input type="text" name="shelf" class="form-control" placeholder="Shelf" value="{{ $product->shelf }}" readonly>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col mb-3">
+            <label class="form-label">Baris</label>
+            <input type="text" name="baris" class="form-control" placeholder="Baris" value="{{ $product->baris }}" readonly>
         </div>
     </div>
     <div class="row">
@@ -34,4 +55,12 @@
             <input type="text" name="updated_at" class="form-control" placeholder="Updated At" value="{{ $product->updated_at }}" readonly>
         </div>
     </div>
+    <div class="row">
+        <div class="col mb-3">
+            <a href="https://www.klikindomaret.com/search/?key={{ $product->product_code }}" class="btn btn-primary" target="_blank">
+                Lihat di klikindomaret.com
+            </a>
+        </div>
+    </div>
+
 @endsection

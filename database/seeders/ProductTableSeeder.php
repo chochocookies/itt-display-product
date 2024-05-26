@@ -20,9 +20,13 @@ class ProductTableSeeder extends Seeder
         foreach ($products as $product) {
             Product::query()->updateOrCreate([
                 'title' => $product['title'],
+                'rak' => $product['rak'],
+                'shelf' => $product['shelf'],
+                'baris' => $product['baris'],
                 'price' => $product['price'],
-                'product_code' => $product['product_code'],
                 'description' => $product['description'],
+                'product_code' => $product['product_code'],
+
             ]);
         }
     }
