@@ -11,7 +11,7 @@
 @endsection
 
 @push('scripts')
-{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
     // Mendapatkan judul unik dan membuat tombol
@@ -21,7 +21,7 @@ $(document).ready(function() {
         success: function(data) {
             var titleButtons = $('#titleButtons');
             data.forEach(function(title) {
-                var button = $('<button class="btn btn-primary m-2 flex-item"></button>').text(title.title);
+                var button = $('<button class="btn btn-outline-secondary m-2 flex-item"></button>').text(title.title);
                 button.click(function() {
                     window.location.href = '{{ route('products.index') }}?title=' + title.title;
                 });

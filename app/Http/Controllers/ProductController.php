@@ -9,76 +9,81 @@ use Milon\Barcode\DNS1D;
 
 class ProductController extends Controller
 {
-    public function data(Request $request)
+//     public function index(Request $request)
+// {
+//     $title = $request->query('title', 'All Products');
+//     $raks = Product::distinct()->pluck('rak');
+//     return view('products.index', compact('title', 'raks'));
+// }
+
+// public function data(Request $request)
+// {
+//     $query = Product::query();
+
+//     if ($request->has('title') && $request->title != '') {
+//         $query->where('title', $request->title);
+//     }
+
+//     if ($request->has('minRak') && $request->minRak != null) {
+//         $query->where('rak', '>=', $request->minRak);
+//     }
+
+//     if ($request->has('maxRak') && $request->maxRak != null) {
+//         $query->where('rak', '<=', $request->maxRak);
+//     }
+
+//     return DataTables::of($query)
+//         ->addColumn('action', function ($product) {
+//             return '<a href="'.route('products.show', $product->id).'" class="btn btn-primary">View</a>';
+//         })
+//         ->make(true);
+// }
+
+    // filter berdasarkan shelf
+    public function index(Request $request)
     {
         $title = $request->query('title', '');
-
-        $products = Product::query();
-
-        if ($title) {
-            $products->where('title', $title);
-        }
-
-        return DataTables::of($products)
-            ->addColumn('action', function ($product) {
-                return '<a href="'.route('products.show', $product->id).'" class="btn btn-primary">View</a>';
-            })
-            ->make(true);
+        $shelves = Product::distinct()->pluck('shelf');
+        return view('products.index', compact('title', 'shelves'));
     }
+
+    public function data(Request $request)
+{
+    $query = Product::query();
+
+    // Filter berdasarkan title jika ada
+    if ($request->has('title') && $request->title != '') {
+        $query->where('title', $request->title);
+    }
+
+    // Filter berdasarkan minShelf jika ada
+    if ($request->has('minShelf') && $request->minShelf != null) {
+        $query->where('shelf', '>=', $request->minShelf);
+    }
+
+    // Filter berdasarkan maxShelf jika ada
+    if ($request->has('maxShelf') && $request->maxShelf != null) {
+        $query->where('shelf', '<=', $request->maxShelf);
+    }
+
+    // Kembalikan data ke DataTables dengan kolom action
+    return DataTables::of($query)
+        ->addColumn('action', function ($product) {
+            return '<a href="'.route('products.show', $product->id).'" class="btn btn-outline-secondary">View</a>';
+        })
+        ->make(true);
+}
+
+
+
 
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
-    {
-        $title = $request->query('title', ''); // Jika tidak ada title yang dikirim, default ke string kosong
-        // \Log::info('Title from URL:', ['title' => $title]); // Tambahkan logging untuk debugging
-        return view('products.index', compact('title'));
-    }
-
-    // public function index()
-    // {
-    //     return view('products.index');
-    // }
     // public function index(Request $request)
     // {
     //     $title = $request->query('title', ''); // Jika tidak ada title yang dikirim, default ke string kosong
     //     return view('products.index', compact('title'));
-    // }
-
-    /**
-     * Get data for DataTables.
-     */
-    // public function data(Request $request)
-    // {
-    //     if ($request->ajax()) {
-    //         $query = Product::query();
-    //         return DataTables::of($query)
-    //             ->addColumn('action', function($row) {
-    //                 $editUrl = route('products.edit', $row->id);
-    //                 $deleteUrl = route('products.destroy', $row->id);
-    //                 return '
-    //                     <a href="'.$editUrl.'" class="btn btn-sm btn-primary">Edit</a>
-    //                     <form action="'.$deleteUrl.'" method="POST" style="display:inline;">
-    //                         '.csrf_field().'
-    //                         '.method_field('DELETE').'
-    //                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-    //                     </form>
-    //                 ';
-    //             })
-    //             ->rawColumns(['action'])
-    //             ->make(true);
-    //     }
-    // }
-    // public function data()
-    // {
-    //     $products = Product::select(['id', 'title', 'rak', 'shelf', 'baris', 'price', 'description', 'product_code']);
-
-    //     return DataTables::of($products)
-    //         ->addColumn('action', function ($product) {
-    //             return '<a href="'.route('products.show', $product->id).'" class="btn btn-primary">View</a>';
-    //         })
-    //         ->make(true);
     // }
 
     public function getUniqueTitles()

@@ -8,6 +8,8 @@
     <meta name="author" content="">
     <title>@yield('title') - PikaCode</title>
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
     <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="{{ asset('admin_assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -25,13 +27,29 @@
             max-width: calc(20% - 1rem); /* Maksimal lebar 20% */
             box-sizing: border-box; /* Include padding and border in the element's total width and height */
         }
-        .table-responsive {
-            overflow-x: auto;
+        .barcode {
+            max-width: 100%;
+            height: auto; /* Menggunakan height: auto agar tingginya dapat disesuaikan */
         }
         @media (max-width: 768px) { /* Atur breakpoint sesuai kebutuhan Anda */
             .flex-item {
                 flex: 1 1 calc(50% - 1rem); /* Lebar 50% untuk 2 tombol per baris dengan margin */
                 max-width: calc(50% - 1rem); /* Maksimal lebar 50% */
+            }
+        }
+        @media (max-width: 768px) {
+            .barcode {
+                max-width: 80%; /* Menyesuaikan lebar maksimum untuk tampilan mobile */
+                height: auto; /* Menggunakan height: auto agar tingginya dapat disesuaikan */
+            }
+            .hide-on-mobile {
+                display: none; /* Menyembunyikan elemen pada tampilan mobile */
+            }
+            /* Mengatur lebar kolom untuk tampilan mobile */
+            table.dataTable thead th,
+            table.dataTable tbody td {
+                white-space: nowrap; /* Mencegah wrap teks pada kolom */
+                width: auto !important; /* Mengatur lebar kolom menjadi otomatis */
             }
         }
     </style>
@@ -55,6 +73,8 @@
         <i class="fas fa-angle-up"></i>
     </a>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
